@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 class Books extends React.Component {
   state = {
@@ -161,9 +162,9 @@ class Books extends React.Component {
             </div>
           </div>
         </div>
-        <div className="open-search">
+        <Link to="/search" className="open-search">
           <button>Add a book</button>
-        </div>
+        </Link>
       </div>
     )
   }
