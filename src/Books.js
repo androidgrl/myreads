@@ -5,6 +5,10 @@ class Books extends React.Component {
   state = {
   }
 
+  handleSelect = (e) => {
+    console.log(e.target.value)
+  }
+
   render() {
     return (
       <div className="list-books">
@@ -24,7 +28,7 @@ class Books extends React.Component {
                           <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}>
                           </div>
                           <div className="book-shelf-changer">
-                            <select>
+                            <select onChange={this.handleSelect}>
                               <option value="move" disabled>Move to...</option>
                               <option value="currentlyReading">Currently Reading</option>
                               <option value="wantToRead">Want to Read</option>
