@@ -1,13 +1,25 @@
 import React from 'react'
+import Shelf from './Shelf'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
 
 class Books extends React.Component {
   state = {
+    books: []
   }
 
-  handleSelect = (event, book) => {
-    const value = event.target.value
-    this.props.onSelectBook(value, book)
+  componentDidMount() {
+    BooksAPI.getAll().then((books) => {
+      this.setState({ books })
+    })
+  }
+
+  selectBook(shelf, book) {
+    BooksAPI.update(book, shelf).then(() => {
+      BooksAPI.getAll().then((books) => {
+        this.setState({ books })
+      })
+    })
   }
 
   render() {
@@ -20,31 +32,7 @@ class Books extends React.Component {
           <div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Currently Reading</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  {this.props.books.map((book) => (
-                    <li key={book.id}>
-                      <div className="book">
-                        <div className="book-top">
-                          <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}>
-                          </div>
-                          <div className="book-shelf-changer">
-                            <select onChange={(event) => this.handleSelect(event, book)} value={book.shelf}>
-                              <option value="move" disabled>Move to...</option>
-                              <option value="currentlyReading">Currently Reading</option>
-                              <option value="wantToRead">Want to Read</option>
-                              <option value="read">Read</option>
-                              <option value="none">None</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="book-title">{book.title}</div>
-                        <div className="book-authors">{book.author}</div>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </div>
+              <Shelf books={this.state.books} onSelectBook={(shelf, book) => this.selectBook(shelf, book)}/>
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Want to Read</h2>
