@@ -5,7 +5,7 @@ import * as BooksAPI from './BooksAPI'
 
 class Books extends React.Component {
   state = {
-    books: []
+    books: [],
   }
 
   componentDidMount() {
@@ -23,6 +23,16 @@ class Books extends React.Component {
   }
 
   render() {
+    const currentlyReadingBooks = this.state.books.filter((book) => book.shelf === 'currentlyReading')
+    const wantToReadBooks = this.state.books.filter((book) => book.shelf === 'wantToRead')
+    const readBooks = this.state.books.filter((book) => book.shelf === 'read')
+
+    const headerToBooks = [
+      {header: 'Currently Reading', books: currentlyReadingBooks},
+      {header: 'Want to Read', books: wantToReadBooks},
+      {header: 'Read', books: readBooks}
+    ]
+
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -30,24 +40,12 @@ class Books extends React.Component {
         </div>
         <div className="list-books-content">
           <div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Currently Reading</h2>
-              <Shelf books={this.state.books} onSelectBook={(shelf, book) => this.selectBook(shelf, book)}/>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Want to Read</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                </ol>
+            {headerToBooks.map((object, index) => (
+              <div key={index} className="bookshelf">
+                <h2 className="bookshelf-title">{object.header}</h2>
+                <Shelf books={object.books} onSelectBook={(shelf, book) => this.selectBook(shelf, book)}/>
               </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">Read</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                </ol>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
         <Link to="/search" className="open-search">
