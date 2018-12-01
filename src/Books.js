@@ -7,7 +7,7 @@ class Books extends React.Component {
 
   handleSelect = (event, book) => {
     const value = event.target.value
-    this.props.onSelectBook(value, book.id)
+    this.props.onSelectBook(value, book)
   }
 
   render() {

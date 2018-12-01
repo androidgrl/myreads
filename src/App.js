@@ -16,11 +16,12 @@ class BooksApp extends React.Component {
     })
   }
 
-  selectBook(shelf, bookId) {
-    const index = this.state.books.findIndex((book) => book.id === bookId)
-    const books = this.state.books
-    books[index].shelf = shelf
-    this.setState({ books })
+  selectBook(shelf, book) {
+    BooksAPI.update(book, shelf).then(() => {
+      BooksAPI.getAll().then((books) => {
+        this.setState({ books })
+      })
+    })
   }
 
   render() {
@@ -30,7 +31,7 @@ class BooksApp extends React.Component {
           <Search />
         )}/>
         <Route exact path="/" render={() => (
-          <Books books={this.state.books} onSelectBook={(shelf, bookId) => this.selectBook(shelf, bookId)}/>
+          <Books books={this.state.books} onSelectBook={(shelf, book) => this.selectBook(shelf, book)}/>
         )}/>
       </div>
     )
