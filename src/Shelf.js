@@ -1,6 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class Shelf extends React.Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    onSelectBook: PropTypes.func.isRequired
+  }
+
   handleSelect = (event, book) => {
     const value = event.target.value
     this.props.onSelectBook(value, book)
