@@ -1,7 +1,7 @@
 import React from 'react'
-import Shelf from './Shelf'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
+import Shelf from './Shelf'
 
 class Books extends React.Component {
   state = {
