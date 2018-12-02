@@ -13,19 +13,21 @@ class Search extends React.Component {
   searchBooks = (q) => {
     const query = q.trim()
     if (this.state.validQueries.indexOf(query) > -1) {
+      let booksWithSelfAttributes = []
       BooksAPI.search(query).then((books) => {
-        this.setState({ books })
+        books.forEach((book) => {
+          BooksAPI.get(book.id).then((book) => {
+            booksWithSelfAttributes.push(book)
+            this.setState( {books: booksWithSelfAttributes} )
+          })
+        })
         this.setState({ query })
       })
     }
   }
 
   selectBook(shelf, book) {
-    BooksAPI.update(book, shelf).then(() => {
-      BooksAPI.search(this.state.query).then((books) => {
-        this.setState({ books })
-      })
-    })
+    BooksAPI.update(book, shelf)
   }
 
   render() {
