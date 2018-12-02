@@ -40,12 +40,14 @@ class Books extends React.Component {
         </div>
         <div className="list-books-content">
           <div>
-            {headerToBooks.map((object, index) => (
-              <div key={index} className="bookshelf">
-                <h2 className="bookshelf-title">{object.header}</h2>
-                <Shelf books={object.books} onSelectBook={(shelf, book) => this.selectBook(shelf, book)}/>
-              </div>
-            ))}
+            <div className="bookshelf-books">
+              {headerToBooks.map((object, index) => (
+                <div key={index} className="bookshelf">
+                  <h2 className="bookshelf-title">{object.header}</h2>
+                  <Shelf books={object.books} onSelectBook={(shelf, book) => this.selectBook(shelf, book)}/>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <Link to="/search" className="open-search">
