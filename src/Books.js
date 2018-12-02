@@ -14,6 +14,7 @@ class Books extends React.Component {
     })
   }
 
+  // Update the book with the new shelf attribute, then request all the books from the database again and display them
   selectBook(shelf, book) {
     BooksAPI.update(book, shelf).then(() => {
       BooksAPI.getAll().then((books) => {
