@@ -22,7 +22,7 @@ class Shelf extends React.Component {
                   <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}>
                   </div>
                   <div className="book-shelf-changer">
-                    <select onChange={(event) => this.handleSelect(event, book)} value={book.shelf}>
+                    <select onChange={(event) => this.handleSelect(event, book)} value={book.shelf} onClick={(event) => this.handleSelect(event, book)} value={book.shelf}>
                       <option value="move" disabled>Move to...</option>
                       <option value="currentlyReading">Currently Reading</option>
                       <option value="wantToRead">Want to Read</option>
