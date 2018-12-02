@@ -7,103 +7,25 @@ class Search extends React.Component {
   state = {
     books: [],
     query: '',
-    validQueries: [
-      'Android',
-      'Art',
-      'Artificial Intelligence',
-      'Astronomy',
-      'Austen',
-      'Baseball',
-      'Basketball',
-      'Bhagat',
-      'Biography',
-      'Brief',
-      'Business',
-      'Camus',
-      'Cervantes',
-      'Christie',
-      'Classics',
-      'Comics',
-      'Cook',
-      'Cricket',
-      'Cycling',
-      'Desai',
-      'Design',
-      'Development',
-      'Digital Marketing',
-      'Drama',
-      'Drawing',
-      'Dumas',
-      'Education',
-      'Everything',
-      'Fantasy',
-      'Film',
-      'Finance',
-      'First',
-      'Fitness',
-      'Football',
-      'Future',
-      'Games',
-      'Gandhi',
-      'Homer',
-      'Horror',
-      'Hugo',
-      'Ibsen',
-      'Journey',
-      'Kafka',
-      'King',
-      'Lahiri',
-      'Larsson',
-      'Learn',
-      'Literary Fiction',
-      'Make',
-      'Manage',
-      'Marquez',
-      'Money',
-      'Mystery',
-      'Negotiate',
-      'Painting',
-      'Philosophy',
-      'Photography',
-      'Poetry',
-      'Production',
-      'Programming',
-      'React',
-      'Redux',
-      'River',
-      'Robotics',
-      'Rowling',
-      'Satire',
-      'Science Fiction',
-      'Shakespeare',
-      'Singh',
-      'Swimming',
-      'Tale',
-      'Thrun',
-      'Time',
-      'Tolstoy',
-      'Travel',
-      'Ultimate',
-      'Virtual Reality',
-      'Web Development',
-      'iOS']
   }
 
   // If the query is valid, then call the search function, since the search function does not return shelf attributes,
   // for each book call the get function which does have shelf attributes, put the books in an array and display them
   searchBooks = (q) => {
     const query = q.trim()
-    if (this.state.validQueries.indexOf(query) > -1) {
-      let booksWithSelfAttributes = []
+    let booksWithShelfAttributes = []
+    if (!query) {
+      this.setState( {books: []} )
+    } else {
       BooksAPI.search(query).then((books) => {
         books.forEach((book) => {
           BooksAPI.get(book.id).then((book) => {
-            booksWithSelfAttributes.push(book)
-            this.setState( {books: booksWithSelfAttributes} )
+            booksWithShelfAttributes.push(book)
+            this.setState( {books: booksWithShelfAttributes} )
           })
         })
         this.setState({ query })
-      })
+      }).catch(() => this.setState( {books: []} ) )
     }
   }
 
