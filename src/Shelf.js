@@ -19,8 +19,7 @@ class Shelf extends React.Component {
             <li key={book.id}>
               <div className="book">
                 <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}>
-                  </div>
+                  {book.imageLinks ? <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}></div> : <div></div>}
                   <div className="book-shelf-changer">
                     <select onChange={(event) => this.handleSelect(event, book)} value={book.shelf}>
                       <option value="move" disabled>Move to...</option>
@@ -32,7 +31,7 @@ class Shelf extends React.Component {
                   </div>
                 </div>
                 <div className="book-title">{book.title}</div>
-                <div className="book-authors">{book.author}</div>
+                {book.author ? <div className="book-authors">{book.author}</div> : <div></div>}
               </div>
             </li>
           ))}
