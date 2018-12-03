@@ -4,16 +4,6 @@ import * as BooksAPI from './BooksAPI'
 import Shelf from './Shelf'
 
 class Books extends React.Component {
-  state = {
-    books: [],
-  }
-
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      this.setState({ books })
-    })
-  }
-
   // Update the book with the new shelf attribute, then request all the books from the database again and display them
   selectBook(shelf, book) {
     BooksAPI.update(book, shelf).then(() => {
@@ -24,9 +14,9 @@ class Books extends React.Component {
   }
 
   render() {
-    const currentlyReadingBooks = this.state.books.filter((book) => book.shelf === 'currentlyReading')
-    const wantToReadBooks = this.state.books.filter((book) => book.shelf === 'wantToRead')
-    const readBooks = this.state.books.filter((book) => book.shelf === 'read')
+    const currentlyReadingBooks = this.props.books.filter((book) => book.shelf === 'currentlyReading')
+    const wantToReadBooks = this.props.books.filter((book) => book.shelf === 'wantToRead')
+    const readBooks = this.props.books.filter((book) => book.shelf === 'read')
 
     const headerToBooks = [
       {header: 'Currently Reading', books: currentlyReadingBooks},
