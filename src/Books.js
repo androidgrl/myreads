@@ -1,16 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types'
 import Shelf from './Shelf'
 
 class Books extends React.Component {
-  // Update the book with the new shelf attribute, then request all the books from the database again and display them
-  selectBook(shelf, book) {
-    BooksAPI.update(book, shelf).then(() => {
-      BooksAPI.getAll().then((books) => {
-        this.setState({ books })
-      })
-    })
+  static propTypes ={
+    books: PropTypes.array.isRequired,
+    selectBook: PropTypes.func.isRequired
   }
 
   render() {
@@ -35,7 +31,7 @@ class Books extends React.Component {
               {headerToBooks.map((object, index) => (
                 <div key={index} className="bookshelf">
                   <h2 className="bookshelf-title">{object.header}</h2>
-                  <Shelf books={object.books} onSelectBook={(shelf, book) => this.selectBook(shelf, book)}/>
+                  <Shelf books={object.books} onSelectBook={(shelf, book) => this.props.selectBook(shelf, book)}/>
                 </div>
               ))}
             </div>

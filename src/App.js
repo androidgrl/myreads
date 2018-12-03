@@ -10,9 +10,19 @@ class BooksApp extends React.Component {
     books: [],
   }
 
+  // After component renders get all the books
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
+    })
+  }
+
+  // Update the book with the new shelf attribute, then request all the books from the database again and display them
+  selectBook(shelf, book) {
+    BooksAPI.update(book, shelf).then(() => {
+      BooksAPI.getAll().then((books) => {
+        this.setState({ books })
+      })
     })
   }
 
@@ -21,7 +31,7 @@ class BooksApp extends React.Component {
       <div className="app">
         <Route path="/search" component={Search} />
         <Route exact path="/" render={() => (
-          <Books books={this.state.books}/>
+          <Books books={this.state.books} selectBook={(shelf, book) => this.selectBook(shelf, book)}/>
         )} />
       </div>
     )
