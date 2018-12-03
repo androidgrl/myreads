@@ -1,37 +1,38 @@
 import React from 'react'
-import Shelf from './Shelf'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
+import Shelf from './Shelf'
 
 class Search extends React.Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    selectBook: PropTypes.func.isRequired
+  }
+
   state = {
-    books: [],
-    query: '',
+    searchingBooks: [],
   }
 
   // If the query is valid, then call the search function, since the search function does not return shelf attributes,
-  // for each book call the get function which does have shelf attributes, put the books in an array and display them
+  // For each book that has a shelf state, update the state in the books displayed
   searchBooks = (q) => {
     const query = q.trim()
-    let booksWithShelfAttributes = []
     if (!query) {
-      this.setState( {books: []} )
+      this.setState( {searchingBooks: []} )
     } else {
-      BooksAPI.search(query).then((books) => {
-        books.forEach((book) => {
-          BooksAPI.get(book.id).then((book) => {
-            booksWithShelfAttributes.push(book)
-            this.setState( {books: booksWithShelfAttributes} )
+      BooksAPI.search(query).then((booksWithoutShelf) => {
+        const booksWithShelf = this.props.books
+        booksWithoutShelf.forEach((bookWithout) => {
+          booksWithShelf.forEach((bookWith) => {
+            if (bookWith.id === bookWithout.id) {
+              bookWithout.shelf = bookWith.shelf
+            }
           })
         })
-        this.setState({ query })
-      }).catch(() => this.setState( {books: []} ) )
+        this.setState( {searchingBooks: booksWithoutShelf} )
+      }).catch(() => this.setState( {searchingBooks: []} ) )
     }
-  }
-
-  // Update the shelf attribute for the selected book
-  selectBook(shelf, book) {
-    BooksAPI.update(book, shelf)
   }
 
   render() {
@@ -45,7 +46,7 @@ class Search extends React.Component {
             </div>
           </div>
           <div className="search-books-results">
-            <Shelf books={this.state.books} onSelectBook={(shelf, book) => this.selectBook(shelf, book)}/>
+            <Shelf books={this.state.searchingBooks} onSelectBook={(shelf, book) => this.props.selectBook(shelf, book)}/>
           </div>
         </div>
         <div>
